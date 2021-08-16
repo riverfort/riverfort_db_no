@@ -12,11 +12,12 @@ def read_article_feed(company_ticker):
     for article in feed['entries'][:1]:
         title    = article["title"]
         pub_date = article["published"]
+        link     = article["link"]
         if is_article_in_db(company_ticker, pub_date):
             print(company_ticker + ": no new feed")
         else:
             print(company_ticker + ": new feed!")
-            push_notification(company_ticker, title)
+            push_notification(company_ticker, title, link)
             delete_all_articles(company_ticker)
             add_article_to_db(company_ticker, pub_date, title)
 
@@ -33,11 +34,11 @@ def add_article_to_db(company_ticker, pub_date, title):
 def delete_all_articles(company_ticker):
     db.delete("DELETE FROM company_news WHERE company_ticker=%s", (company_ticker,))
 
-def push_notification(company_ticker, title):
+def push_notification(company_ticker, title, link):
     result = db.filter_data("SELECT device_token FROM watchlist WHERE company_ticker=%s", (company_ticker,))
     for device_token in result:
         loop = asyncio.get_event_loop()
-        loop.run_until_complete(push_notification_run(device_token[0], company_ticker, title))
+        loop.run_until_complete(push_notification_run(device_token[0], company_ticker, title, link))
 
 companies = db.select_data("SELECT * FROM company")
 for company in companies:

@@ -6,7 +6,7 @@ def remove_lse_company_ticker_suffix(company_ticker):
     if company_ticker.endswith(".L"):
         return company_ticker[:-2]
 
-async def push_notification_run(device_token, company_ticker, title):
+async def push_notification_run(device_token, company_ticker, title, link):
     print("-- pushing notification to: " + device_token)
     apns_key_client = APNs(
         key='key/AuthKey_58M45W44RZ.p8',
@@ -25,6 +25,7 @@ async def push_notification_run(device_token, company_ticker, title):
                 },
                 "sound": "default",
                 "company_ticker": "{}".format(company_ticker),
+                "link": "{}".format(link),
             }
         },
     )
