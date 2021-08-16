@@ -1,0 +1,14 @@
+aioapns==2.0.2
+cffi==1.14.6
+cryptography==3.4.7
+feedparser==6.0.8
+h2==4.0.0
+hpack==4.0.0
+hyperframe==6.0.1
+logger==1.4
+psycopg2==2.9.1
+pycparser==2.20
+PyJWT==2.1.0
+pyOpenSSL==20.0.1
+sgmllib3k==1.0.0
+six==1.16.0
