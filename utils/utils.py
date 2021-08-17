@@ -13,7 +13,7 @@ async def push_notification_run(device_token, company_ticker, title, link):
         key_id='58M45W44RZ',
         team_id='A8X2W38P62',
         topic='com.RiverFort',  # Bundle ID
-        use_sandbox=True,
+        use_sandbox=False,
     )
     request = NotificationRequest(
         device_token=device_token,
