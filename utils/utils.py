@@ -26,6 +26,7 @@ async def push_notification_run(device_token, company_ticker, title, link):
                 "sound": "default",
                 "company_ticker": "{}".format(company_ticker),
                 "link": "{}".format(link),
+                "category": "NEWS_CATEGORY",
             }
         },
     )
