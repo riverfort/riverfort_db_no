@@ -1,6 +1,7 @@
 from db.configuration.config import DatabaseConnection
 from utils.utils import remove_lse_company_ticker_suffix
 from utils.utils import push_notification_run
+from datetime import datetime
 import feedparser
 import asyncio
 
@@ -17,7 +18,7 @@ def read_article_feed(company_ticker):
             print(company_ticker + ": no new feed")
         else:
             print(company_ticker + ": new feed!")
-            push_notification(company_ticker, title, link)
+            push_notification(company_ticker, title, link, pub_date)
             delete_all_articles(company_ticker)
             add_article_to_db(company_ticker, pub_date, title)
 
@@ -34,11 +35,20 @@ def add_article_to_db(company_ticker, pub_date, title):
 def delete_all_articles(company_ticker):
     db.delete("DELETE FROM company_news WHERE company_ticker=%s", (company_ticker,))
 
-def push_notification(company_ticker, title, link):
-    result = db.filter_data("SELECT device_token FROM watchlist WHERE company_ticker=%s", (company_ticker,))
-    for device_token in result:
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(push_notification_run(device_token[0], company_ticker, title, link))
+def push_notification(company_ticker, title, link, pub_date):
+    if is_article_today(pub_date):
+        result = db.filter_data("SELECT device_token FROM watchlist WHERE company_ticker=%s", (company_ticker,))
+        for device_token in result:
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(push_notification_run(device_token[0], company_ticker, title, link))
+
+def is_article_today(pub_date):
+    article_pub_date = datetime.strptime(pub_date, "%d %b, %Y %H:%M:%S").date()
+    today = datetime.today().date()
+    if article_pub_date == today:
+        return True
+    else:
+        return False
 
 companies = db.select_data("SELECT * FROM company")
 for company in companies:
