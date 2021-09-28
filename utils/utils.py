@@ -2,9 +2,8 @@ import asyncio
 from uuid import uuid4
 from aioapns import APNs, NotificationRequest, PushType
 
-def remove_lse_company_ticker_suffix(company_ticker):
-    if company_ticker.endswith(".L"):
-        return company_ticker[:-2]
+def remove_company_ticker_suffix(company_ticker):
+    return company_ticker.split(".")[0]
 
 async def push_notification_run(device_token, company_ticker, title, link):
     print("-- pushing notification to: " + device_token)
