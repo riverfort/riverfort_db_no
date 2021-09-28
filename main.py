@@ -8,7 +8,7 @@ import asyncio
 db = DatabaseConnection("riverFort_no", "river", "fort", "localhost", 5432)
 
 def read_article_feed(company_ticker):
-    symbol = remove_lse_company_ticker_suffix(company_ticker)
+    symbol = remove_company_ticker_suffix(company_ticker)
     feed = feedparser.parse('https://www.investegate.co.uk/Rss.aspx?company={}'.format(symbol))
     for article in feed['entries'][:1]:
         title    = article["title"]
