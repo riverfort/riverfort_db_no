@@ -1,5 +1,5 @@
 from db.configuration.config import DatabaseConnection
-from utils.utils import remove_lse_company_ticker_suffix
+from utils.utils import remove_company_ticker_suffix
 from utils.utils import push_notification_run
 from datetime import datetime
 import feedparser
